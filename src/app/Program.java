@@ -13,9 +13,9 @@ public class Program {
 	public static void main(String[] args) throws ParseException {
 		Locale.setDefault(Locale.US);
 		Scanner sc = new Scanner(System.in);
-		Reservation rs = new Reservation();
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Reservation rs = new Reservation();
 
 		System.out.print("Número do quarto: ");
 		Integer roomNumber = sc.nextInt();
@@ -32,30 +32,22 @@ public class Program {
 			if (!checkOut.after(checkIn)) {
 				System.out.println("Erro na reserva: a data de check-out deve ser posterior ao check-in!");
 			} else {
-
 				rs = new Reservation(roomNumber, checkIn, checkOut);
 				System.out.println(rs);
 			}
 		}
-		System.out.println(" ");
-		System.out.println(" ");
+		System.out.println();
 
 		System.out.println("Entre com os dados para atualizar a reserva: ");
 		System.out.print("Check-in(dd/mm/yyyy): ");
 		checkIn = sdf.parse(sc.next());
 		System.out.print("Check-out(dd/mm/yyyy): ");
 		checkOut = sdf.parse(sc.next());
-
-		if (checkIn.before(now) || checkOut.before(now)) {
-			System.out.println("Erro na reserva: as datas da reserva devem ser futuras.");
+		String error = rs.UpdateDates(checkIn, checkOut);
+		if (error == null) {
+			System.out.println(rs);
 		} else {
-
-			if (!checkOut.after(checkIn)) {
-				System.out.println("Erro na reserva: a data de check-out deve ser posterior ao check-in!");
-			} else {
-				rs.UpdateDates(checkIn, checkOut);
-				System.out.println(rs);
-			}
+			System.out.println(error);
 		}
 
 		sc.close();
