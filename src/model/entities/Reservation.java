@@ -19,6 +19,13 @@ public class Reservation {
 	}
 
 	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+		Date now = new Date();
+		if (!checkOut.after(checkIn)) {
+			throw new DomainException("Erro na reserva: a data de check-out deve ser posterior ao check-in");
+		}
+		if (checkIn.before(now) || checkOut.before(now)) {
+			throw new DomainException("Erro na reserva: as datas da reserva devem ser futuras.");
+		}
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -45,7 +52,7 @@ public class Reservation {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 
-	public void UpdateDates(Date checkIn, Date checkOut) throws DomainException {
+	public void UpdateDates(Date checkIn, Date checkOut) {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
 			throw new DomainException("Erro na reserva: as datas da reserva devem ser futuras.");

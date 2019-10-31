@@ -48,6 +48,9 @@ public class Program {
 		catch(InputMismatchException e) {
 			System.out.println("Erro de argumentos!");
 		}
+		catch(RuntimeException e) {
+			System.out.println("Erro inesperado!");
+		}
 		sc.close();
 	}
 
