@@ -1,8 +1,11 @@
 package model.entities;
 
 import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import model.exceptions.DomainException;
 
 public class Reservation {
 	private Integer roomNumber;
@@ -37,23 +40,22 @@ public class Reservation {
 		return checkOut;
 	}
 
-	public long duration() {
-		long diff = checkOut.getTime() - checkIn.getTime();
+	public Long duration() {
+		Long diff = checkOut.getTime() - checkIn.getTime();
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 
-	public String UpdateDates(Date checkIn, Date checkOut) {
+	public void UpdateDates(Date checkIn, Date checkOut) throws DomainException {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Erro na reserva: as datas da reserva devem ser futuras.";
+			throw new DomainException("Erro na reserva: as datas da reserva devem ser futuras.");
 		}
 
 		if (!checkOut.after(checkIn)) {
-			return "Erro na reserva: a data de check-out deve ser posterior ao check-in!";
+			throw new DomainException("Erro na reserva: a data de check-out deve ser posterior ao check-in");
 		}
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null;
 	}
 
 	@Override
